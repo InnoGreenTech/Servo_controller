@@ -1,6 +1,7 @@
 void read_eeprom(){
   
       analog_servo=EEPROM.read (30);
+      move_mode=EEPROM.read (36);
       delay_standby=(EEPROM.read(32))*1000;
       battery_limit=(float)(EEPROM.read(34))/10;
       if (battery_limit>8){battery_limit=8;}
@@ -18,7 +19,7 @@ void read_eeprom(){
           if (y==2){Serial.print(F(" (A)ccélération: "));Serial.print(int((float(servos[i][y])*360)/250));}
           
           }
-          Serial.print(F(" (P)Analogique: "));Serial.println(bitRead(analog_servo,i));
+          Serial.print(F(" (P)Analogique: "));Serial.println(bitRead(analog_servo,i)+bitRead(move_mode,i));
     }
     Serial.print(F(" DELAY de mise en veille: "));Serial.println(delay_standby/1000);
     Serial.print(F(" VOLTS Batterie déchargée: "));Serial.println(battery_limit);

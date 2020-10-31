@@ -23,10 +23,12 @@
     #define OUTPUT_SERVO_6 12
     #define POWER_SERVOS   6
 
+
     byte  analog_servo;                       // use to active or desactivate servo
+    byte  move_mode;                          // use to active move mode
 
 
-    byte  servos[6][5];                       //use to set and control servos
+    int  servos[6][7];                       //use to set and control servos
 
       #define SERVO_1 0
       #define SERVO_2 1
@@ -39,10 +41,12 @@
   
       #define END     0       // End position
       #define ZERO    1       // Zero position  
-      #define ACC     2       // acceleration or deceleration of servo 0 to 250 per period see bellow
+      #define ACC_MAX 2       // acceleration or deceleration of servo 0 to 250 per period see bellow
       #define CUR     3       // current postion
       #define DEMAND  4       // demand postion
-
+      #define MIDLE   5       // Midle position 
+      #define ACC     6       // Midle position 
+      
      byte nb_20ms;
      #define PERIOD_ACCELERATION 2
 
@@ -88,7 +92,7 @@
   unsigned long delay_standby;
   unsigned long start_delay_standby;
   
-  #define DELAY_ENABLE_SERVOS   1000
+  #define DELAY_ENABLE_SERVOS   200
   unsigned long delay_enable_servos;
   
     
@@ -140,7 +144,23 @@ void setup() {
   if(!bitRead(analog_servo,SERVO_5)){pinMode(CONTROL_SERVO_5,INPUT_PULLUP);}
   if(!bitRead(analog_servo,SERVO_6)){pinMode(CONTROL_SERVO_6,INPUT_PULLUP);}
 
-  
+/* auto adjust midle position */
+
+  servos[SERVO_1][MIDLE]=analogRead(CONTROL_SERVO_1);
+  servos[SERVO_2][MIDLE]=analogRead(CONTROL_SERVO_2);
+  servos[SERVO_3][MIDLE]=analogRead(CONTROL_SERVO_3);
+  servos[SERVO_4][MIDLE]=analogRead(CONTROL_SERVO_4);
+  servos[SERVO_5][MIDLE]=analogRead(CONTROL_SERVO_5);
+  Serial.println(servos[SERVO_5][MIDLE]);
+  servos[SERVO_6][MIDLE]=analogRead(CONTROL_SERVO_6);
+
+/* Init ACC information */
+  servos[SERVO_1][ACC]=servos[SERVO_1][ACC_MAX];
+  servos[SERVO_2][ACC]=servos[SERVO_2][ACC_MAX];
+  servos[SERVO_3][ACC]=servos[SERVO_3][ACC_MAX];
+  servos[SERVO_4][ACC]=servos[SERVO_4][ACC_MAX];
+  servos[SERVO_5][ACC]=servos[SERVO_5][ACC_MAX];
+  servos[SERVO_6][ACC]=servos[SERVO_6][ACC_MAX];    
 
   delay_enable_servos=millis();
 
@@ -159,27 +179,84 @@ void loop() {
   
   int analog_value; 
   analog_value=analogRead(CONTROL_SERVO_1);
-  if(bitRead(analog_servo,SERVO_1)){servos[SERVO_1][DEMAND]=map(analog_value,1024,0,servos[SERVO_1][ZERO],servos[SERVO_1][END]);}
+  if(bitRead(analog_servo,SERVO_1)){
+    if( bitRead(move_mode,SERVO_1)){
+      if (analog_value>(servos[SERVO_1][MIDLE]+5)){servos[SERVO_1][DEMAND]=servos[SERVO_1][END];}
+      else if (analog_value<(servos[SERVO_1][MIDLE]-5)){servos[SERVO_1][DEMAND]=servos[SERVO_1][ZERO];}
+      else {servos[SERVO_1][DEMAND]=servos[SERVO_1][CUR];}
+      analog_value=abs(servos[SERVO_1][MIDLE]-analog_value);
+      servos[SERVO_1][ACC]=map(analog_value,0,512,servos[SERVO_1][ZERO],servos[SERVO_1][END]);
+    }
+    else{servos[SERVO_1][DEMAND]=map(analog_value,1024,0,0,servos[SERVO_1][ACC_MAX]);}
+    }
   else if(analog_value>700){servos[SERVO_1][DEMAND]=servos[SERVO_1][END];}else if(analog_value<100){servos[SERVO_1][DEMAND]=servos[SERVO_1][ZERO];}
   
   analog_value=analogRead(CONTROL_SERVO_2);
-  if(bitRead(analog_servo,SERVO_2)){servos[SERVO_2][DEMAND]=map(analog_value,1024,0,servos[SERVO_2][ZERO],servos[SERVO_2][END]);}
+  if(bitRead(analog_servo,SERVO_2)){
+      if( bitRead(move_mode,SERVO_2)){
+        if (analog_value>(servos[SERVO_2][MIDLE]+5)){servos[SERVO_2][DEMAND]=servos[SERVO_2][END];}
+        else if (analog_value<(servos[SERVO_2][MIDLE]-5)){servos[SERVO_2][DEMAND]=servos[SERVO_2][ZERO];}
+        else {servos[SERVO_2][DEMAND]=servos[SERVO_2][CUR];}
+        analog_value=abs(servos[SERVO_2][MIDLE]-analog_value);
+        servos[SERVO_2][ACC]=map(analog_value,0,512,0,servos[SERVO_2][ACC_MAX]);
+      }
+      else{servos[SERVO_2][DEMAND]=map(analog_value,1024,0,servos[SERVO_2][ZERO],servos[SERVO_2][END]);}
+  }
   else if(analog_value>700){servos[SERVO_2][DEMAND]=servos[SERVO_2][END];}else if(analog_value<100){servos[SERVO_2][DEMAND]=servos[SERVO_2][ZERO];}
+  
+  
+  
     
   analog_value=analogRead(CONTROL_SERVO_3);
-  if(bitRead(analog_servo,SERVO_3)){servos[SERVO_3][DEMAND]=map(analog_value,1024,0,servos[SERVO_3][ZERO],servos[SERVO_3][END]);}
+  if(bitRead(analog_servo,SERVO_3)){
+      if( bitRead(move_mode,SERVO_3)){
+        if (analog_value>(servos[SERVO_3][MIDLE]+5)){servos[SERVO_3][DEMAND]=servos[SERVO_3][END];}
+        else if (analog_value<(servos[SERVO_3][MIDLE]-5)){servos[SERVO_3][DEMAND]=servos[SERVO_3][ZERO];}
+        else {servos[SERVO_3][DEMAND]=servos[SERVO_3][CUR];}
+        analog_value=abs(servos[SERVO_3][MIDLE]-analog_value);
+        servos[SERVO_3][ACC]=map(analog_value,0,512,0,servos[SERVO_3][ACC_MAX]);
+      }
+      else{servos[SERVO_3][DEMAND]=map(analog_value,1024,0,servos[SERVO_3][ZERO],servos[SERVO_3][END]);}
+  }
   else if(analog_value>700){servos[SERVO_3][DEMAND]=servos[SERVO_3][END];}else if(analog_value<100){servos[SERVO_3][DEMAND]=servos[SERVO_3][ZERO];}
     
   analog_value=analogRead(CONTROL_SERVO_4);
-  if(bitRead(analog_servo,SERVO_4)){servos[SERVO_4][DEMAND]=map(analog_value,1024,0,servos[SERVO_4][ZERO],servos[SERVO_4][END]);} 
+  if(bitRead(analog_servo,SERVO_4)){
+      if( bitRead(move_mode,SERVO_4)){
+        if (analog_value>(servos[SERVO_4][MIDLE]+5)){servos[SERVO_4][DEMAND]=servos[SERVO_4][END];}
+        else if (analog_value<(servos[SERVO_4][MIDLE]-5)){servos[SERVO_4][DEMAND]=servos[SERVO_4][ZERO];}
+        else {servos[SERVO_4][DEMAND]=servos[SERVO_4][CUR];}
+        analog_value=abs(servos[SERVO_4][MIDLE]-analog_value);
+        servos[SERVO_4][ACC]=map(analog_value,0,512,0,servos[SERVO_4][ACC_MAX]);
+      }
+      else{servos[SERVO_4][DEMAND]=map(analog_value,1024,0,servos[SERVO_4][ZERO],servos[SERVO_4][END]);}
+  } 
   else if(analog_value>700){servos[SERVO_4][DEMAND]=servos[SERVO_4][END];}else if(analog_value<100){servos[SERVO_4][DEMAND]=servos[SERVO_4][ZERO];}
     
   analog_value=analogRead(CONTROL_SERVO_5);
-  if(bitRead(analog_servo,SERVO_5)){servos[SERVO_5][DEMAND]=map(analog_value,1024,0,servos[SERVO_5][ZERO],servos[SERVO_5][END]);}
+  if(bitRead(analog_servo,SERVO_5)){
+      if( bitRead(move_mode,SERVO_5)){
+        if (analog_value>(servos[SERVO_5][MIDLE]+5)){servos[SERVO_5][DEMAND]=servos[SERVO_5][END];}
+        else if (analog_value<(servos[SERVO_5][MIDLE]-5)){servos[SERVO_5][DEMAND]=servos[SERVO_5][ZERO];}
+        else {servos[SERVO_5][DEMAND]=servos[SERVO_5][CUR];}
+        analog_value=abs(servos[SERVO_5][MIDLE]-analog_value);
+        servos[SERVO_5][ACC]=map(analog_value,0,512,0,servos[SERVO_5][ACC_MAX]);
+      }
+      else{servos[SERVO_5][DEMAND]=map(analog_value,1024,0,servos[SERVO_5][ZERO],servos[SERVO_5][END]);}
+  }
   else if(analog_value>700){servos[SERVO_5][DEMAND]=servos[SERVO_5][END];}else if(analog_value<100){servos[SERVO_5][DEMAND]=servos[SERVO_5][ZERO];}
 
   analog_value=analogRead(CONTROL_SERVO_6);
-  if(bitRead(analog_servo,SERVO_6)){servos[SERVO_6][DEMAND]=map(analog_value,1024,0,servos[SERVO_6][ZERO],servos[SERVO_6][END]);}
+  if(bitRead(analog_servo,SERVO_6)){
+      if( bitRead(move_mode,SERVO_6)){
+        if (analog_value>(servos[SERVO_6][MIDLE]+5)){servos[SERVO_6][DEMAND]=servos[SERVO_6][END];}
+        else if (analog_value<(servos[SERVO_6][MIDLE]-5)){servos[SERVO_6][DEMAND]=servos[SERVO_6][ZERO];}
+        else {servos[SERVO_6][DEMAND]=servos[SERVO_6][CUR];}
+        analog_value=abs(servos[SERVO_6][MIDLE]-analog_value);
+        servos[SERVO_6][ACC]=map(analog_value,0,512,0,servos[SERVO_6][ACC_MAX]);
+      }
+      else{servos[SERVO_6][DEMAND]=map(analog_value,1024,0,servos[SERVO_6][ZERO],servos[SERVO_6][END]);}
+  }
   else if(analog_value>700){servos[SERVO_6][DEMAND]=servos[SERVO_6][END];}else if(analog_value<100){servos[SERVO_6][DEMAND]=servos[SERVO_6][ZERO];}
   
   serial_command();
@@ -196,12 +273,13 @@ void loop() {
 
   if(!digitalRead(POWER_SERVOS)){
     if (millis()>(delay_enable_servos+DELAY_ENABLE_SERVOS)){digitalWrite(POWER_SERVOS,1);Serial.println("Servo enable");}  
-    servos[SERVO_1][CUR]=servos[SERVO_1][DEMAND];         // allow to stay in place at the begining
-    servos[SERVO_2][CUR]=servos[SERVO_2][DEMAND];
-    servos[SERVO_3][CUR]=servos[SERVO_3][DEMAND];
-    servos[SERVO_4][CUR]=servos[SERVO_4][DEMAND];
-    servos[SERVO_5][CUR]=servos[SERVO_5][DEMAND];
-    servos[SERVO_6][CUR]=servos[SERVO_6][DEMAND];
+    for (int i=0; i>6; i++){
+      if (bitRead(move_mode,i)){
+        servos[i][CUR]=servos[SERVO_1][ZERO]; 
+      }
+      else{servos[i][CUR]=servos[i][DEMAND]; }
+    }
+
   }
 
 }
