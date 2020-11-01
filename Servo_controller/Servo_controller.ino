@@ -151,7 +151,6 @@ void setup() {
   servos[SERVO_3][MIDLE]=analogRead(CONTROL_SERVO_3);
   servos[SERVO_4][MIDLE]=analogRead(CONTROL_SERVO_4);
   servos[SERVO_5][MIDLE]=analogRead(CONTROL_SERVO_5);
-  Serial.println(servos[SERVO_5][MIDLE]);
   servos[SERVO_6][MIDLE]=analogRead(CONTROL_SERVO_6);
 
 /* Init ACC information */
