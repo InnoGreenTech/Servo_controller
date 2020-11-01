@@ -54,7 +54,7 @@ void check_message(){
         else if  (label=="S1R"){servos[SERVO_1][ZERO]=valeur;EEPROM.write(ZERO,valeur);Serial.println(succes);}
         else if  (label=="S1F"){servos[SERVO_1][END]=valeur;EEPROM.write(END,valeur);Serial.println(succes);}
         else if  (label=="S1A"){servos[SERVO_1][ACC_MAX]=valeur;EEPROM.write(ACC_MAX,valeur);Serial.println(succes);}
-        else if  (label=="S1P"){if(valeur==0){bitClear(analog_servo,0);bitClear(move_mode,0);pinMode(CONTROL_SERVO_1,INPUT_PULLUP);}
+        else if  (label=="S1M"){if(valeur==0){bitClear(analog_servo,0);bitClear(move_mode,0);pinMode(CONTROL_SERVO_1,INPUT_PULLUP);}
                                 else if (valeur==1){bitSet(analog_servo,0);bitClear(move_mode,0);}
                                 else {bitSet(analog_servo,0);bitSet(move_mode,0);}                            
                                 EEPROM.write(30,analog_servo);
@@ -64,7 +64,7 @@ void check_message(){
         else if  (label=="S2R"){servos[SERVO_2][ZERO]=valeur;EEPROM.write(ZERO+5,valeur);Serial.println(succes);}
         else if  (label=="S2F"){servos[SERVO_2][END]=valeur;EEPROM.write(END+5,valeur);Serial.println(succes);}
         else if  (label=="S2A"){servos[SERVO_2][ACC_MAX]=valeur;EEPROM.write(ACC_MAX+5,valeur);Serial.println(succes);}
-        else if  (label=="S2P"){if(valeur==0){bitClear(analog_servo,1);bitClear(move_mode,1);pinMode(CONTROL_SERVO_2,INPUT_PULLUP);}
+        else if  (label=="S2M"){if(valeur==0){bitClear(analog_servo,1);bitClear(move_mode,1);pinMode(CONTROL_SERVO_2,INPUT_PULLUP);}
                                 else if (valeur==1){bitSet(analog_servo,1);bitClear(move_mode,1);}
                                 else{bitSet(analog_servo,1);bitSet(move_mode,1);} 
                                 EEPROM.write(30,analog_servo);
@@ -74,7 +74,7 @@ void check_message(){
         else if  (label=="S3R"){servos[SERVO_3][ZERO]=valeur;EEPROM.write(ZERO+10,valeur);Serial.println(succes);}
         else if  (label=="S3F"){servos[SERVO_3][END]=valeur;EEPROM.write(END+10,valeur);Serial.println(succes);}
         else if  (label=="S3A"){servos[SERVO_3][ACC_MAX]=valeur;EEPROM.write(ACC_MAX+10,valeur);Serial.println(succes);}
-        else if  (label=="S3P"){if(valeur==0){bitClear(analog_servo,2);bitClear(move_mode,2);pinMode(CONTROL_SERVO_3,INPUT_PULLUP);}
+        else if  (label=="S3M"){if(valeur==0){bitClear(analog_servo,2);bitClear(move_mode,2);pinMode(CONTROL_SERVO_3,INPUT_PULLUP);}
                                 else if (valeur==1){bitSet(analog_servo,2);bitClear(move_mode,2);}
                                 else{bitSet(analog_servo,2);bitSet(move_mode,2);}
                                 EEPROM.write(30,analog_servo);
@@ -84,7 +84,7 @@ void check_message(){
         else if  (label=="S4R"){servos[SERVO_4][ZERO]=valeur;EEPROM.write(ZERO+15,valeur);Serial.println(succes);}
         else if  (label=="S4F"){servos[SERVO_4][END]=valeur;EEPROM.write(END+15,valeur);Serial.println(succes);}
         else if  (label=="S4A"){servos[SERVO_4][ACC_MAX]=valeur;EEPROM.write(ACC_MAX+15,valeur);Serial.println(succes);}
-        else if  (label=="S4P"){if(valeur==0){bitClear(analog_servo,3);bitClear(move_mode,3);pinMode(CONTROL_SERVO_4,INPUT_PULLUP);}
+        else if  (label=="S4M"){if(valeur==0){bitClear(analog_servo,3);bitClear(move_mode,3);pinMode(CONTROL_SERVO_4,INPUT_PULLUP);}
                                 else if (valeur==1){bitSet(analog_servo,3);bitClear(move_mode,3);}
                                 else{bitSet(analog_servo,3);bitSet(move_mode,3);}
                                 EEPROM.write(30,analog_servo);
@@ -95,7 +95,7 @@ void check_message(){
         else if  (label=="S5R"){servos[SERVO_5][ZERO]=valeur;EEPROM.write(ZERO+20,valeur);Serial.println(succes);}
         else if  (label=="S5F"){servos[SERVO_5][END]=valeur;EEPROM.write(END+20,valeur);Serial.println(succes);}
         else if  (label=="S5A"){servos[SERVO_5][ACC_MAX]=valeur;EEPROM.write(ACC_MAX+20,valeur);Serial.println(succes);}
-        else if  (label=="S5P"){if(valeur==0){bitClear(analog_servo,4);bitClear(move_mode,4);pinMode(CONTROL_SERVO_5,INPUT_PULLUP);}
+        else if  (label=="S5M"){if(valeur==0){bitClear(analog_servo,4);bitClear(move_mode,4);pinMode(CONTROL_SERVO_5,INPUT_PULLUP);}
                                 else if (valeur==1){bitSet(analog_servo,4);bitClear(move_mode,4);}
                                 else{bitSet(analog_servo,4);bitSet(move_mode,4);}
                                 EEPROM.write(30,analog_servo);
@@ -106,7 +106,7 @@ void check_message(){
         else if  (label=="S6R"){servos[SERVO_6][ZERO]=valeur;EEPROM.write(ZERO+25,valeur);Serial.println(succes);}
         else if  (label=="S6F"){servos[SERVO_6][END]=valeur;EEPROM.write(END+25,valeur);Serial.println(succes);}
         else if  (label=="S6A"){servos[SERVO_6][ACC_MAX]=valeur;EEPROM.write(ACC_MAX+25,valeur);Serial.println(succes);}
-        else if  (label=="S6P"){if(valeur==0){bitClear(analog_servo,5);bitClear(move_mode,5);pinMode(CONTROL_SERVO_6,INPUT_PULLUP);}
+        else if  (label=="S6M"){if(valeur==0){bitClear(analog_servo,5);bitClear(move_mode,5);pinMode(CONTROL_SERVO_6,INPUT_PULLUP);}
                                 else if (valeur==1){bitSet(analog_servo,5);bitClear(move_mode,5);}
                                 else{bitSet(analog_servo,5);bitClear(move_mode,5);}
                                 EEPROM.write(30,analog_servo);
@@ -119,10 +119,13 @@ void check_message(){
 
         else{Serial.println(F("Le label utilisé n'est pas reconnu."));
              Serial.println(F("La synthaxe est: S suivit du numéro du servo suivit du paramètre à ajuster"));
-             Serial.println(F("R -Position Repos(0-->360), F -Position Final(0->360), A -Accélération(0->360), P -Entrée analogique(0 ou 1)"));
+             Serial.println(F("R -Position Repos(0-->360), F -Position Final(0->360), A -Accélération(0->360), M -Choix du mode(0 -> 2)"));
+             Serial.println(F("Mode 0: Entrée TOR"));
+             Serial.println(F("Mode 1: Entrée analogique de positionnent")); 
+             Serial.println(F("Mode 1: Entrée analogique de mouvement"));              
              Serial.println(F("Exemple S3A=160"));}
              Serial.println(F("Réglage en seconde du délais de mise en veille: DELAY=10 "));
-             Serial.println(F("Réglage en décivolts du délais de mise en veille (6,2 volts: VOLTS=62 "));
+             Serial.println(F("Réglage en décivolts de la protection batterie: VOLTS=62 (6,2 volts)"));
              
        Serial.println();
        read_eeprom();

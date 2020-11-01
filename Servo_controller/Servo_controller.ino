@@ -8,8 +8,7 @@
 
 
     #include <EEPROM.h>
-    
-  
+
     
 
  /*    Servos memory setting    */
@@ -48,7 +47,8 @@
       #define ACC     6       // Midle position 
       
      byte nb_20ms;
-     #define PERIOD_ACCELERATION 2
+     
+     #define PERIOD_ACCELERATION 2  // To adjust the number of cycles bettween to increase servo position. exemple= 4x20ms = 80 ms 
 
  /* Message user traitement */
 
