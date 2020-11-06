@@ -25,6 +25,7 @@
 
     byte  analog_servo;                       // use to active or desactivate servo
     byte  move_mode;                          // use to active move mode
+    byte  edge_push_buttom;                   // use mode push bottom
 
 
     int  servos[6][7];                       //use to set and control servos
@@ -177,6 +178,7 @@ void setup() {
 void loop() {
   
   int analog_value; 
+  
   analog_value=analogRead(CONTROL_SERVO_1);
   if(bitRead(analog_servo,SERVO_1)){
     if( bitRead(move_mode,SERVO_1)){
@@ -188,7 +190,13 @@ void loop() {
     }
     else{servos[SERVO_1][DEMAND]=map(analog_value,1024,0,0,servos[SERVO_1][ACC_MAX]);}
     }
-  else if(analog_value>700){servos[SERVO_1][DEMAND]=servos[SERVO_1][END];}else if(analog_value<100){servos[SERVO_1][DEMAND]=servos[SERVO_1][ZERO];}
+  else if(bitRead(move_mode,SERVO_1)){  
+      
+    if (bitRead(edge_push_buttom,SERVO_1)){if (analog_value>700){bitClear(edge_push_buttom,SERVO_1);}}
+    else if(analog_value<100 and servos[SERVO_1][DEMAND]==servos[SERVO_1][END]){servos[SERVO_1][DEMAND]=servos[SERVO_1][ZERO];bitSet(edge_push_buttom,SERVO_1);}
+    else if(analog_value<100 and servos[SERVO_1][DEMAND]==servos[SERVO_1][ZERO]){servos[SERVO_1][DEMAND]=servos[SERVO_1][END];bitSet(edge_push_buttom,SERVO_1);}      
+  }  
+  else if(analog_value<100){servos[SERVO_1][DEMAND]=servos[SERVO_1][END];}else if(analog_value>700){servos[SERVO_1][DEMAND]=servos[SERVO_1][ZERO];}
   
   analog_value=analogRead(CONTROL_SERVO_2);
   if(bitRead(analog_servo,SERVO_2)){
@@ -201,7 +209,12 @@ void loop() {
       }
       else{servos[SERVO_2][DEMAND]=map(analog_value,1024,0,servos[SERVO_2][ZERO],servos[SERVO_2][END]);}
   }
-  else if(analog_value>700){servos[SERVO_2][DEMAND]=servos[SERVO_2][END];}else if(analog_value<100){servos[SERVO_2][DEMAND]=servos[SERVO_2][ZERO];}
+  else if(bitRead(move_mode,SERVO_2)){    
+    if (bitRead(edge_push_buttom,SERVO_2)){if (analog_value>700){bitClear(edge_push_buttom,SERVO_2);}}
+    else if(analog_value<100 and servos[SERVO_2][DEMAND]==servos[SERVO_2][END]){servos[SERVO_2][DEMAND]=servos[SERVO_2][ZERO];bitSet(edge_push_buttom,SERVO_2);}
+    else if(analog_value<100 and servos[SERVO_2][DEMAND]==servos[SERVO_2][ZERO]){servos[SERVO_2][DEMAND]=servos[SERVO_2][END];bitSet(edge_push_buttom,SERVO_2);}      
+  }
+  else if(analog_value<100){servos[SERVO_2][DEMAND]=servos[SERVO_2][END];}else if(analog_value>700){servos[SERVO_2][DEMAND]=servos[SERVO_2][ZERO];}
   
   
   
@@ -217,7 +230,12 @@ void loop() {
       }
       else{servos[SERVO_3][DEMAND]=map(analog_value,1024,0,servos[SERVO_3][ZERO],servos[SERVO_3][END]);}
   }
-  else if(analog_value>700){servos[SERVO_3][DEMAND]=servos[SERVO_3][END];}else if(analog_value<100){servos[SERVO_3][DEMAND]=servos[SERVO_3][ZERO];}
+  else if(bitRead(move_mode,SERVO_3)){    
+    if (bitRead(edge_push_buttom,SERVO_3)){if (analog_value>700){bitClear(edge_push_buttom,SERVO_3);}}
+    else if(analog_value<100 and servos[SERVO_3][DEMAND]==servos[SERVO_3][END]){servos[SERVO_3][DEMAND]=servos[SERVO_3][ZERO];bitSet(edge_push_buttom,SERVO_3);}
+    else if(analog_value<100 and servos[SERVO_3][DEMAND]==servos[SERVO_3][ZERO]){servos[SERVO_3][DEMAND]=servos[SERVO_3][END];bitSet(edge_push_buttom,SERVO_3);}      
+  }
+  else if(analog_value<100){servos[SERVO_3][DEMAND]=servos[SERVO_3][END];}else if(analog_value>700){servos[SERVO_3][DEMAND]=servos[SERVO_3][ZERO];}
     
   analog_value=analogRead(CONTROL_SERVO_4);
   if(bitRead(analog_servo,SERVO_4)){
@@ -230,7 +248,12 @@ void loop() {
       }
       else{servos[SERVO_4][DEMAND]=map(analog_value,1024,0,servos[SERVO_4][ZERO],servos[SERVO_4][END]);}
   } 
-  else if(analog_value>700){servos[SERVO_4][DEMAND]=servos[SERVO_4][END];}else if(analog_value<100){servos[SERVO_4][DEMAND]=servos[SERVO_4][ZERO];}
+  else if(bitRead(move_mode,SERVO_4)){    
+    if (bitRead(edge_push_buttom,SERVO_4)){if (analog_value>700){bitClear(edge_push_buttom,SERVO_4);}}
+    else if(analog_value<100 and servos[SERVO_4][DEMAND]==servos[SERVO_4][END]){servos[SERVO_4][DEMAND]=servos[SERVO_4][ZERO];bitSet(edge_push_buttom,SERVO_4);}
+    else if(analog_value<100 and servos[SERVO_4][DEMAND]==servos[SERVO_4][ZERO]){servos[SERVO_4][DEMAND]=servos[SERVO_4][END];bitSet(edge_push_buttom,SERVO_4);}      
+  }
+  else if(analog_value<100){servos[SERVO_4][DEMAND]=servos[SERVO_4][END];}else if(analog_value>700){servos[SERVO_4][DEMAND]=servos[SERVO_4][ZERO];}
     
   analog_value=analogRead(CONTROL_SERVO_5);
   if(bitRead(analog_servo,SERVO_5)){
@@ -243,7 +266,12 @@ void loop() {
       }
       else{servos[SERVO_5][DEMAND]=map(analog_value,1024,0,servos[SERVO_5][ZERO],servos[SERVO_5][END]);}
   }
-  else if(analog_value>700){servos[SERVO_5][DEMAND]=servos[SERVO_5][END];}else if(analog_value<100){servos[SERVO_5][DEMAND]=servos[SERVO_5][ZERO];}
+  else if(bitRead(move_mode,SERVO_5)){    
+    if (bitRead(edge_push_buttom,SERVO_5)){if (analog_value>700){bitClear(edge_push_buttom,SERVO_5);}}
+    else if(analog_value<100 and servos[SERVO_5][DEMAND]==servos[SERVO_5][END]){servos[SERVO_5][DEMAND]=servos[SERVO_5][ZERO];bitSet(edge_push_buttom,SERVO_5);}
+    else if(analog_value<100 and servos[SERVO_5][DEMAND]==servos[SERVO_5][ZERO]){servos[SERVO_5][DEMAND]=servos[SERVO_5][END];bitSet(edge_push_buttom,SERVO_5);}      
+  }
+  else if(analog_value<100){servos[SERVO_5][DEMAND]=servos[SERVO_5][END];}else if(analog_value>700){servos[SERVO_5][DEMAND]=servos[SERVO_5][ZERO];}
 
   analog_value=analogRead(CONTROL_SERVO_6);
   if(bitRead(analog_servo,SERVO_6)){
@@ -256,7 +284,12 @@ void loop() {
       }
       else{servos[SERVO_6][DEMAND]=map(analog_value,1024,0,servos[SERVO_6][ZERO],servos[SERVO_6][END]);}
   }
-  else if(analog_value>700){servos[SERVO_6][DEMAND]=servos[SERVO_6][END];}else if(analog_value<100){servos[SERVO_6][DEMAND]=servos[SERVO_6][ZERO];}
+  else if(bitRead(move_mode,SERVO_6)){    
+    if (bitRead(edge_push_buttom,SERVO_6)){if (analog_value>700){bitClear(edge_push_buttom,SERVO_6);}}
+    else if(analog_value<100 and servos[SERVO_6][DEMAND]==servos[SERVO_6][END]){servos[SERVO_6][DEMAND]=servos[SERVO_6][ZERO];bitSet(edge_push_buttom,SERVO_6);}
+    else if(analog_value<100 and servos[SERVO_6][DEMAND]==servos[SERVO_6][ZERO]){servos[SERVO_6][DEMAND]=servos[SERVO_6][END];bitSet(edge_push_buttom,SERVO_6);}      
+  }
+  else if(analog_value<100){servos[SERVO_6][DEMAND]=servos[SERVO_6][END];}else if(analog_value>700){servos[SERVO_6][DEMAND]=servos[SERVO_6][ZERO];}
   
   serial_command();
   
