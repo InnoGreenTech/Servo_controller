@@ -3,9 +3,11 @@ void read_eeprom(){
       analog_servo=EEPROM.read (30);
       move_mode=EEPROM.read (36);
       delay_standby=(EEPROM.read(32))*1000;
+      if (EEPROM.read(32)==255){delay_standby=30000;}
       battery_limit=(float)(EEPROM.read(34))/10;
+      if (EEPROM.read(34)==255){battery_limit=5;}
       if (battery_limit>8){battery_limit=8;}
-      if (delay_standby<10){delay_standby=10;}
+      if (delay_standby<10){delay_standby=30000;}
 
 
     for (int i=0;i<6;i++){ 
@@ -26,4 +28,7 @@ void read_eeprom(){
     }
     Serial.print(F(" DELAY de mise en veille: "));Serial.println(delay_standby/1000);
     Serial.print(F(" VOLTS Batterie déchargée: "));Serial.println(battery_limit);
+    control_battery();
+    Serial.print(F("Tension actuelle de la batterie: "));Serial.println(v_battery);
+    
 }
